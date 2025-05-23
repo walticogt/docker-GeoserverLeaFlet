@@ -1,0 +1,30 @@
+services:
+  leaflet-nginx:
+    image: nginx:alpine
+    container_name: leaflet-nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./leaflet:/usr/share/nginx/html:ro
+    networks:
+      - leaflet-gis
+
+  geoserver:
+    image: oscarfonts/geoserver
+    container_name: geoserver
+    ports:
+      - "8080:8080"
+    environment:
+      - GEOSERVER_ADMIN_USER=admin
+      - GEOSERVER_ADMIN_PASSWORD=geoserver
+    volumes:
+      - geoserver_data:/opt/geoserver/data_dir
+    networks:
+      - leaflet-gis
+
+networks:
+  leaflet-gis:
+
+volumes:
+  geoserver_data:
+
